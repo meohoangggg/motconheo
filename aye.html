@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Gửi em ❤️</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: "Times New Roman", serif;
+    background: linear-gradient(135deg, #ffd6e7, #fff0f5);
+    overflow: hidden;
+}
+
+.page {
+    display: none;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    padding: 20px;
+}
+
+.active { display: flex; animation: fadeIn 1s; }
+
+@keyframes fadeIn {
+    from {opacity:0; transform: translateY(20px);} 
+    to {opacity:1; transform: translateY(0);} 
+}
+
+input {
+    padding: 12px;
+    font-size: 18px;
+    border-radius: 12px;
+    border: none;
+}
+
+button {
+    margin-top: 15px;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 12px;
+    background: #ff5c8a;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    transform: scale(1.1);
+    background: #ff2e63;
+}
+
+.text-box {
+    width: 85%;
+    font-size: 24px;
+    line-height: 1.7;
+}
+
+.big-text {
+    font-size: 52px;
+    color: #ff2e63;
+    animation: glow 1.5s infinite alternate;
+}
+
+@keyframes glow {
+    from { text-shadow: 0 0 10px #ff9bb3; }
+    to { text-shadow: 0 0 30px #ff2e63; }
+}
+
+.heart {
+    position: absolute;
+    animation: float 6s linear infinite;
+}
+
+@keyframes float {
+    from { transform: translateY(100vh) scale(1); opacity:1; }
+    to { transform: translateY(-10vh) scale(1.6); opacity:0; }
+}
+
+.shake {
+    animation: shake 0.3s;
+}
+
+@keyframes shake {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    50% { transform: translateX(5px); }
+    75% { transform: translateX(-5px); }
+    100% { transform: translateX(0); }
+}
+
+</style>
+</head>
+
+<body onclick="startMusic()">
+
+<audio id="bgm" loop>
+    <source src="https://www.bensound.com/bensound-music/bensound-romantic.mp3" type="audio/mp3">
+</audio>
+
+<!-- PAGE 1 -->
+<div class="page active" id="page1">
+    <h2>Một chút bất ngờ cho em 💖</h2>
+    <input type="password" id="password" placeholder="Nhập mật khẩu...">
+    <button onclick="checkPassword()">Mở khóa 🔓</button>
+</div>
+
+<!-- PAGE 2 -->
+<div class="page" id="page2">
+    <div class="text-box" id="text2"></div>
+    <div id="question" style="display:none;">
+        <p>Em là một con heo đúng không? 🐷</p>
+        <button onclick="goPage(3)">Đúng 🥺</button>
+        <button onclick="wrongAnswer()">Không 😝</button>
+    </div>
+</div>
+
+<!-- PAGE 3 -->
+<div class="page" id="page3">
+    <div class="text-box" id="text3"></div>
+    <button id="nextBtn" style="display:none;" onclick="goPage(4)">Tiếp tục 💕</button>
+</div>
+
+<!-- PAGE 4 -->
+<div class="page" id="page4">
+    <div class="big-text">Anh Bảo yêu một con heo ❤️🐷</div>
+</div>
+
+<script>
+function goPage(page) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById('page' + page).classList.add('active');
+
+    if(page === 2) typeText(textPage2, 'text2', showQuestion);
+    if(page === 3) typeText(textPage3, 'text3', showNextBtn);
+
+    if(page === 4) {
+        document.body.classList.add('shake');
+        setTimeout(()=>document.body.classList.remove('shake'),500);
+    }
+}
+
+function checkPassword() {
+    let pass = document.getElementById('password').value;
+    if(pass === "2504") {
+        goPage(2);
+    } else {
+        alert("Sai rồi 😢 thử lại nha");
+    }
+}
+
+function startMusic(){
+    document.getElementById("bgm").play();
+}
+
+let textPage2 = "Em à, anh biết lúc này em đang rất lo lắng và sợ hãi, nhưng em đừng sợ nhé, anh luôn ở đây. Dù không thể nắm tay em lúc này, nhưng trái tim anh luôn ở cạnh em. Em mạnh mẽ lắm, và anh tin em sẽ vượt qua tất cả.";
+
+let textPage3 = "Chỉ cần em bình an trở lại, với anh như vậy là đủ rồi. Anh vẫn sẽ ở đây, vẫn sẽ yêu em, vẫn sẽ bên em lâu thật lâu. Sau chuyện này, mình sẽ cùng nhau đi ăn, đi chơi, và bù lại tất cả nhé ❤️";
+
+function typeText(text, id, callback) {
+    let i = 0;
+    let el = document.getElementById(id);
+    el.innerHTML = "";
+
+    function typing() {
+        if(i < text.length) {
+            el.innerHTML += text.charAt(i);
+            i++;
+            setTimeout(typing, 35);
+        } else if(callback) callback();
+    }
+    typing();
+}
+
+function showQuestion() {
+    document.getElementById('question').style.display = 'block';
+}
+
+function showNextBtn() {
+    document.getElementById('nextBtn').style.display = 'block';
+}
+
+function wrongAnswer() {
+    document.body.classList.add('shake');
+    setTimeout(()=>document.body.classList.remove('shake'),300);
+    alert("Sai rồi 😏 trả lời lại đi");
+}
+
+// tim bay nâng cấp
+setInterval(() => {
+    let heart = document.createElement("div");
+    heart.className = "heart";
+    heart.innerHTML = Math.random() > 0.5 ? "❤️" : "💖";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.fontSize = (20 + Math.random() * 30) + "px";
+    document.body.appendChild(heart);
+
+    setTimeout(() => heart.remove(), 6000);
+}, 250);
+</script>
+
+</body>
+</html>
